@@ -29,3 +29,13 @@ Esquema de Disposição da Tela Principal:
 4. Botão Central de Inversão de Sentido
 5. Campo de Saída Numérica com Menu de Unidade de Destino
 6. Painel Inferior de Histórico Recente e Favoritos
+
+Interação 1
+
+Estruturação da interface utilizando layouts em XML.
+Uso de EditText para entrada de dados do usuário.
+
+Interação 2
+
+Uso de GridView para apresentar um conjunto de imagens em formato de grade (galeria).
+Criação e exibição de um Menu de contexto (ações relacionadas a um componente específico, acionadas por pressionar e segurar).

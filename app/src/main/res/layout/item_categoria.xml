@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/imgCategoria"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="4dp"
+        android:contentDescription="@null"
+        android:src="@android:drawable/ic_menu_compass" />
+
+    <TextView
+        android:id="@+id/tvNomeCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comprimentoCategoria"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>
