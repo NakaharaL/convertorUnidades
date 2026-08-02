@@ -19,7 +19,8 @@
    A navegação é estruturada em um fluxo direto que divide as ações entre a seleção de categorias e a inserção de dados.
 
 Fluxo Lógico:
-Tela Principal -> Seleção de Grandeza Física -> Entrada de Valor e Escolha de Unidades -> Exibição do Resultado e Histórico
+
+Tela Principal → Seleção de Grandeza Física → Entrada de Valor e Escolha de Unidades → Exibição do Resultado e Histórico
 
 Esquema de Disposição da Tela Principal:
 
@@ -39,3 +40,13 @@ Interação 2
 
 Uso de GridView para apresentar um conjunto de imagens em formato de grade (galeria).
 Criação e exibição de um Menu de contexto (ações relacionadas a um componente específico, acionadas por pressionar e segurar).
+
+Interação 3
+
+Uso de SharedPreferences para salvar e recuperar dados simples do usuário.
+Compartilhamento de dados entre diferentes Activities utilizando o método getSharedPreferences().
+Salvamento de arquivos no armazenamento interno do aplicativo utilizando FileOutputStream.
+Leitura de dados a partir de arquivos internos utilizando FileInputStream e InputStreamReader.
+Salvamento de dados no armazenamento externo, utilizando o método getExternalStorageDirectory().
+Acesso a arquivos localizados na pasta res/raw utilizando o método openRawResource().
+Criação de uma classe auxiliar de banco de dados (Database Helper) estendendo a classe SQLiteOpenHelper.
