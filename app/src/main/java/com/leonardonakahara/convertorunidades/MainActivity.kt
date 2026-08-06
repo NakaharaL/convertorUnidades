@@ -2,6 +2,7 @@ package com.leonardonakahara.convertorunidades
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,11 +12,13 @@ import android.widget.GridView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnConverter: Button
     private lateinit var btnLimpar: Button
     private lateinit var btnAlternar: Button
+    private lateinit var btnEnviarSMS: Button
 
     private lateinit var adapterCategorias: CategoriaAdapter
     private lateinit var prefs: PreferencesHelper
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         btnConverter = findViewById(R.id.btnConverter)
         btnLimpar = findViewById(R.id.btnLimpar)
         btnAlternar = findViewById(R.id.btnAlternar)
+        btnEnviarSMS = findViewById(R.id.btnEnviarSMS)
 
         val listaCategorias = listOf(
             CategoriaUnidade("comprimento", getString(R.string.comprimento), android.R.drawable.ic_menu_compass),
@@ -138,6 +143,57 @@ class MainActivity : AppCompatActivity() {
             etValorEntrada.text.clear()
             etValorSaida.text.clear()
             prefs.limpar()
+        }
+
+        btnEnviarSMS.setOnClickListener {
+            solicitarTelefoneEEnviarSMS()
+        }
+    }
+
+    private fun solicitarTelefoneEEnviarSMS() {
+        val valorEntrada = etValorEntrada.text.toString().trim()
+        val valorSaida = etValorSaida.text.toString().trim()
+        val unidadeEntrada = spUnidadeEntrada.selectedItem?.toString() ?: ""
+        val unidadeSaida = spUnidadeSaida.selectedItem?.toString() ?: ""
+
+        if (valorEntrada.isEmpty() && valorSaida.isEmpty()) {
+            Toast.makeText(this, "Realize uma conversão ou insira os dados antes de enviar.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val mensagem = "Conversão: $valorEntrada $unidadeEntrada = $valorSaida $unidadeSaida"
+
+        val inputTelefone = EditText(this).apply {
+            hint = "Ex: 11999999999"
+            inputType = InputType.TYPE_CLASS_PHONE
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Enviar SMS")
+            .setMessage("Digite o número de telefone do destinatário:")
+            .setView(inputTelefone)
+            .setPositiveButton("Enviar") { _, _ ->
+                val telefone = inputTelefone.text.toString().trim()
+                if (telefone.isNotEmpty()) {
+                    abrirAppDeSMS(telefone, mensagem)
+                } else {
+                    Toast.makeText(this, "Número de telefone inválido.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun abrirAppDeSMS(telefone: String, mensagem: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = "smsto:$telefone".toUri()
+            putExtra("sms_body", mensagem)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (_: Exception) {
+            Toast.makeText(this, "Não foi possível abrir o aplicativo de SMS.", Toast.LENGTH_SHORT).show()
         }
     }
 

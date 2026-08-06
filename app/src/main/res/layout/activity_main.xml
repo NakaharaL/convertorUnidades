@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Toolbar no topo com botão hambúrguer no canto superior esquerdo -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         app:titleTextColor="@android:color/white"
         app:navigationIcon="@android:drawable/ic_menu_sort_by_size" />
 
-    <!-- Container do conteúdo com espaçamento interno -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -99,6 +97,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             style="?android:attr/buttonBarStyle"
+            android:weightSum="3"
             android:layout_marginBottom="24dp">
 
             <Button
@@ -107,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/limpar"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 style="?android:attr/buttonBarButtonStyle" />
 
             <Button
@@ -116,7 +115,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/converter"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/btnEnviarSMS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/enviar_sms"
+                android:layout_marginStart="4dp"
                 style="?android:attr/buttonBarButtonStyle" />
 
         </LinearLayout>
