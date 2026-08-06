@@ -55,3 +55,4 @@ Interação 4
 
 Envio de mensagens SMS diretamente pelo aplicativo, utilizando recursos nativos da plataforma Android.
 Envio de mensagens SMS por meio do aplicativo de mensagens do sistema, utilizando integração com intents.
+
