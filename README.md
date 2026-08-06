@@ -50,3 +50,8 @@ Leitura de dados a partir de arquivos internos utilizando FileInputStream e Inpu
 Salvamento de dados no armazenamento externo, utilizando o método getExternalStorageDirectory().
 Acesso a arquivos localizados na pasta res/raw utilizando o método openRawResource().
 Criação de uma classe auxiliar de banco de dados (Database Helper) estendendo a classe SQLiteOpenHelper.
+
+Interação 4
+
+Envio de mensagens SMS diretamente pelo aplicativo, utilizando recursos nativos da plataforma Android.
+Envio de mensagens SMS por meio do aplicativo de mensagens do sistema, utilizando integração com intents.
