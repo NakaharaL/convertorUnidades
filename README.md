@@ -60,7 +60,7 @@ Interação 5
 
 Integração do Google Maps ao seu aplicativo.
 Uso de localização geográfica, obtida por diferentes meios.
-Permição de interação do usuário com o mapa, selecionando locais e navegando entre regiões.
+Permissão de interação do usuário com o mapa, selecionando locais e navegando entre regiões.
 Utilização de geocodificação e geocodificação reversa para transformar coordenadas em endereços e vice-versa.
 Implementação de funcionalidades básicas de monitoramento de localização.
 Conexão do aplicativo à internet utilizando HTTP.
