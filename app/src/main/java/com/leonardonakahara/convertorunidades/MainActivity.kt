@@ -1,8 +1,12 @@
 package com.leonardonakahara.convertorunidades
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,11 +18,15 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.material.appbar.MaterialToolbar
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,18 +39,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnLimpar: Button
     private lateinit var btnAlternar: Button
     private lateinit var btnEnviarSMS: Button
+    private lateinit var toolbar: MaterialToolbar
 
     private lateinit var adapterCategorias: CategoriaAdapter
     private lateinit var prefs: PreferencesHelper
     private lateinit var storageManager: StorageManager
     private lateinit var dbHelper: MeuDatabaseHelper
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQ_CODE = 1001
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Instancia os gerenciadores
+        // Configuração da Toolbar para exibir o Menu
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         prefs = PreferencesHelper(this)
         storageManager = StorageManager(this)
         dbHelper = MeuDatabaseHelper(this)
@@ -77,7 +97,6 @@ class MainActivity : AppCompatActivity() {
         adapterCategorias = CategoriaAdapter(this, listaCategorias)
         gvTiposUnidades.adapter = adapterCategorias
 
-        // Restaurando valores das SharedPreferences
         val posCategoriaSalva = prefs.obterCategoriaPosicao()
         val posEntradaSalva = prefs.obterUnidadeEntradaPosicao()
         val posSaidaSalva = prefs.obterUnidadeSaidaPosicao()
@@ -92,7 +111,6 @@ class MainActivity : AppCompatActivity() {
             etValorEntrada.setText(valorSalvo)
         }
 
-        // --- EXECUTANDO LEITURA DO ARQUIVO DA PASTA res/raw VIA openRawResource() ---
         lerArquivoRaw()
 
         gvTiposUnidades.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -105,7 +123,8 @@ class MainActivity : AppCompatActivity() {
         btnConverter.setOnClickListener {
             val valor = etValorEntrada.text.toString()
 
-            // 1. Salva nas SharedPreferences
+            obterLocalizacaoDoUsuario()
+
             prefs.salvarEstado(
                 valorEntrada = valor,
                 categoriaPos = gvTiposUnidades.checkedItemPosition.takeIf { it != GridView.INVALID_POSITION } ?: 0,
@@ -113,21 +132,13 @@ class MainActivity : AppCompatActivity() {
                 unidadeSaidaPos = spUnidadeSaida.selectedItemPosition
             )
 
-            // 2. Salva em arquivo interno (FileOutputStream)
             storageManager.salvarEmArquivoInterno("dados_internos.txt", valor)
-
-            // 3. Lê do arquivo interno (FileInputStream + InputStreamReader)
             val textoLidoInterno = storageManager.lerDeArquivoInterno("dados_internos.txt")
-
-            // 4. Salva no armazenamento externo (getExternalStorageDirectory)
             storageManager.salvarEmArquivoExterno("dados_externos.txt", valor)
-
-            // 5. Insere registro no banco SQLite via SQLiteOpenHelper
             dbHelper.inserirRegistro(valor)
 
             Toast.makeText(this, "Arquivo Interno Lido: $textoLidoInterno", Toast.LENGTH_SHORT).show()
 
-            // 6. Abre a SegundaActivity para comprovar compartilhamento via getSharedPreferences()
             val intent = Intent(this, SegundaActivity::class.java)
             startActivity(intent)
         }
@@ -147,6 +158,55 @@ class MainActivity : AppCompatActivity() {
 
         btnEnviarSMS.setOnClickListener {
             solicitarTelefoneEEnviarSMS()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_mapa -> {
+                val intent = Intent(this, MapActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_sobre -> {
+                Toast.makeText(this, "Aplicativo Conversor de Unidades v1.0", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_limpar_historico -> {
+                Toast.makeText(this, "Histórico limpo!", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun obterLocalizacaoDoUsuario() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                LOCATION_PERMISSION_REQ_CODE
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                Toast.makeText(
+                    this,
+                    "Localização da Conversão:\nLat: ${location.latitude}, Lng: ${location.longitude}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização atual.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -197,7 +257,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Leitura do recurso res/raw/raw_sample.txt usando openRawResource
     private fun lerArquivoRaw() {
         try {
             val inputStream = resources.openRawResource(R.raw.raw_sample)

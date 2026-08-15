@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Seção de Geocodificação por Endereço -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etEndereco"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_endereco"
+            android:inputType="textPostalAddress" />
+
+        <Button
+            android:id="@+id/btnBuscarEndereco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buscar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <EditText
+            android:id="@+id/etLat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hin_latitude"
+            android:inputType="numberSigned|numberDecimal" />
+
+        <EditText
+            android:id="@+id/etLng"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_longitude"
+            android:inputType="numberSigned|numberDecimal" />
+
+        <Button
+            android:id="@+id/btnBuscarCoord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/irCoordenadas" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnBuscarJson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/json_consumir"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

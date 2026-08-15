@@ -17,6 +17,12 @@
     <string name="exemplo_de_conversao">Exemplo de Conversão</string>
     <string name="comprimentoCategoria">Comprimento</string>
     <string name="enviar_sms">Enviar SMS</string>
+    <string name="hint_endereco">Digite o endereço...</string>
+    <string name="buscar">Buscar</string>
+    <string name="hin_latitude">Lat (-2.52)</string>
+    <string name="hint_longitude">Lng (-44.30)</string>
+    <string name="irCoordenadas">Ir Coord</string>
+    <string name="json_consumir">Consumir Dados Externos (HTTP/JSON)</string>
     <string-array name="dados_fake_historico">
         <item>10 km = 6.21 miles</item>
         <item>100 °C = 212 °F</item>
