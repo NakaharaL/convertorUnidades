@@ -1,4 +1,61 @@
-# Projeto de Conversão de Unidades
+Versão final - Descrição do Projeto
+
+O Conversor de Unidades Mobile é um aplicativo Android desenvolvido em Kotlin projetado para realizar conversões rápidas de diversas grandezas físicas (comprimento, velocidade, temperatura, volume e peso). O sistema integra serviços baseados em localização para registrar a posição geográfica exata do usuário no momento da conversão, persistência local de dados (SharedPreferences, banco SQLite e arquivos internos/externos) e recursos de integração com a API do Google Maps para navegação, geocodificação e geocodificação reversa. Além disso, conta com consumo de serviços web externos em formato JSON via HTTP.
+
+Declaração do Problema
+
+Usuários que precisam converter unidades de medida em campo frequentemente precisam de ferramentas operacionais que associem o cálculo ao contexto geográfico onde a operação foi realizada. As soluções existentes limitam-se à matemática do cálculo, sem registrar dados espaciais de auditoria, sem permitir a identificação de locais associados no mapa ou sem oferecer suporte para o compartilhamento e consumo de dados via rede em tempo real.
+
+Plataforma
+
+1) Plataforma alvo: Android (API Level 24+ / Android 7.0 até Android 15/16).
+2) Linguagem de Programação: Kotlin.
+3) Ambiente de Desenvolvimento: Android Studio.
+4) Bibliotecas e APIs de Terceiros: Google Play Services (Maps e Location API), OkHttp3 (Requisições HTTP), Org.JSON e Android Material Components.
+
+Interface do Usuário e Interface do Administrador
+
+1) Interface do Usuário (Mobile):
+   a) Barra Superior (MaterialToolbar): Acesso rápido às opções do aplicativo (Google Maps, Sobre, Limpar Histórico).
+   b) Seleção de Categorias (GridView): Grade interativa com ícones e rótulos para escolha do tipo de unidade.
+   c) Controles de Conversão: Campos de texto (EditText) para entrada e saída de dados, acoplados a seletores (Spinner) para definição das unidades de origem e destino.
+   d) Painel de Ações: Botões operacionais para alternar unidades, limpar campos, efetuar conversão e enviar resultados via SMS.
+   e) Tela de Mapeamento (MapActivity): Layout dedicado com controles para busca textual de endereços (Geocodificação), entrada manual de coordenadas (Geocodificação Reversa) e consumo de API JSON externa.
+
+2) Interface do Administrador:
+
+   Por se tratar de um aplicativo mobile standalone focado no cliente, não há um painel administrativo Web/Server dedicado nesta versão. O gerenciamento de dados e do histórico é feito localmente pelo próprio usuário através de ações diretas na interface (limpeza de banco SQLite e SharedPreferences).
+
+Funcionalidade
+
+1) Conversão de Grandezas: Cálculo instantâneo entre diferentes unidades de medida organizadas por categorias.
+2) Persistência Multi-nível: Armazenamento automático das preferências do usuário (SharedPreferences), gravação em arquivos de texto internos e externos e inserção em banco de dados SQLite (MeuDatabaseHelper).
+3) Monitoramento de Localização: Captura da latitude e longitude do dispositivo no instante em que o usuário executa uma conversão através da API FusedLocationProviderClient.
+4) Mapeamento e Geolocalização (Google Maps):
+5) Visualização interactiva do mapa com marcadores dinâmicos.
+6) Geocodificação Direta: Conversão de nomes de ruas/endereços em coordenadas geográficas com atualização da câmera.
+7) Geocodificação Reversa: Clique no mapa ou digitação de coordenadas (Lat/Lng) para obter o endereço completo correspondente.
+8) Comunicação de Rede e JSON: Conexão HTTP assíncrona para requisição e leitura de payloads JSON de APIs externas.
+9) Integração do Sistema: Disparo de mensagens contendo os resultados das conversões via aplicativo padrão de SMS (ACTION_SENDTO).
+
+Design (Wireframes e Layouts de Página)
+1) activity_main.xml (Tela Principal):
+
+   a) Topo: MaterialToolbar contendo o título e o menu de opções.
+   b) Centro Superior: GridView (3 colunas) exibindo ícones das categorias.
+   c) Centro: Dois blocos horizontais (EditText + Spinner) divididos pelo botão de alternância vertical, seguidos pela barra de botões principais ("Limpar", "Converter", "Enviar SMS").
+   d) Rodapé: Lista visual (ListView) e rótulo fixo para apresentação do histórico de conversões efetuadas.
+
+2) activity_map.xml (Tela do Google Maps):
+
+   a) Topo: Caixa de entrada de endereço com botão "Buscar" alinhado à direita.
+   b) Sub-topo: Dois campos de texto lado a lado (Lat e Lng) com botão "Ir Coord". 
+   c) Centro: Botão largo para acionar a requisição da API externa JSON.
+   d) Área Principal: Componente <fragment> do SupportMapFragment ocupando todo o espaço restante inferior para exibição do mapa interativo.
+
+------------------------------------------
+
+Versão 1 - original - # Projeto de Conversão de Unidades
 
 1. Descrição do Projeto
    Este projeto consiste no desenvolvimento de um aplicativo para o sistema operacional Android voltado à conversão instantânea de unidades de medida. O software realiza os cálculos localmente no dispositivo, permitindo a operação sem dependência de conexão com a internet. O escopo do sistema abrange os principais sistemas de mensuração utilizados globalmente.
