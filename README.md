@@ -6,7 +6,7 @@ Declaração do Problema
 
 Usuários que precisam converter unidades de medida em campo frequentemente precisam de ferramentas operacionais que associem o cálculo ao contexto geográfico onde a operação foi realizada. As soluções existentes limitam-se à matemática do cálculo, sem registrar dados espaciais de auditoria, sem permitir a identificação de locais associados no mapa ou sem oferecer suporte para o compartilhamento e consumo de dados via rede em tempo real.
 
-Plataforma
+Plataforma 
 
 1) Plataforma alvo: Android (API Level 24+ / Android 7.0 até Android 15/16).
 2) Linguagem de Programação: Kotlin.
